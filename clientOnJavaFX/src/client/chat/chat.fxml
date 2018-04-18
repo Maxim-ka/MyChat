@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styleGUI.css"
+            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+       <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <Button fx:id="buttonClear" alignment="CENTER" contentDisplay="CENTER" maxWidth="140.0"
+                 mnemonicParsing="false" onAction="#clearMessage"
+                 onKeyPressed="#clearMessage" prefHeight="66.0" text="Удаление сообщений"
+                 textAlignment="CENTER" wrapText="true">
+            <font>
+               <Font size="18.0" />
+            </font></Button>
+           <TextField fx:id="textField" onAction="#sendMessage" prefHeight="66.0" HBox.hgrow="ALWAYS">
+            <font>
+               <Font size="24.0" />
+            </font></TextField>
+           <Button fx:id="buttonSend" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#sendMessage" onKeyPressed="#sendMessage" prefHeight="66.0" text="Отправить">
+            <font>
+               <Font size="22.0" />
+            </font></Button>
+       </HBox>
+   </bottom>
+   <center>
+       <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+           <TextArea fx:id="textArea" editable="false" focusTraversable="false" mouseTransparent="true" pickOnBounds="false" wrapText="true">
+            <font>
+               <Font size="24.0" />
+            </font>
+            <padding>
+               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+            </padding></TextArea>
+       </ScrollPane>
+   </center>
+   <right>
+       <ScrollPane accessibleRole="RADIO_MENU_ITEM" hbarPolicy="NEVER" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
+           <ListView mouseTransparent="true" prefHeight="500.0" prefWidth="248.0" />
+       </ScrollPane>
+   </right>
+   <top>
+      <Label fx:id="label" focusTraversable="false" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </top>
+</BorderPane>

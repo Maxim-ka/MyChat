@@ -1,0 +1,23 @@
+.button,
+#textField {
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    /*-fx-alignment: center;*/
+  /*  -fx-padding: 5;*/
+}
+
+#buttonClear:hover,
+#buttonClear:focused,
+#buttonClear:pressed{
+    -fx-background-color: #FF4500;
+}
+
+#buttonSend:hover,
+#buttonSend:focused,
+#buttonSend:pressed{
+    -fx-background-color: #54FF9F;
+}
+
+#textField:focused{
+    -fx-background-color: #FCFFBD;
+}
