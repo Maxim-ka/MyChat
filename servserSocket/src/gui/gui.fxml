@@ -70,7 +70,7 @@
         <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <Button fx:id="startButton" onAction="#startServer" alignment="TOP_CENTER" contentDisplay="TOP" graphicTextGap="0.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="125.0" text="Включение" textAlignment="JUSTIFY" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+        <Button onAction="#startServer" alignment="TOP_CENTER" contentDisplay="TOP" graphicTextGap="0.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="125.0" text="Включение" textAlignment="JUSTIFY" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
             <graphic>
                 <Circle fx:id="start" fill="WHITE" radius="15.0" scaleZ="0.0" stroke="#2fcf23" strokeType="INSIDE" translateX="90.0">
                <rotationAxis>
@@ -84,7 +84,7 @@
             <Insets />
          </opaqueInsets>
         </Button>
-        <Button fx:id="finishButton" onAction="#finishServer" alignment="TOP_CENTER" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="125.0" text="Выключение" textAlignment="JUSTIFY" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+        <Button onAction="#finishServer" alignment="TOP_CENTER" contentDisplay="TOP" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="125.0" text="Выключение" textAlignment="JUSTIFY" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
             <graphic>
                 <Circle fx:id="finish" fill="#ff1f36" radius="15.0" scaleZ="0.0" stroke="#ffffff" strokeType="INSIDE" translateX="90.0">
                <rotationAxis>

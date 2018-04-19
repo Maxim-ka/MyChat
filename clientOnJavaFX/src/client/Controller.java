@@ -1,6 +1,8 @@
 package client;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,11 +13,9 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Optional;
 
@@ -32,6 +32,8 @@ class Controller {
     private TextField loginField;
     @FXML
     private PasswordField passField;
+    @FXML
+    private ListView<String> nicksListView;
 
     private static final int PORT = 8189;
     private static final String IP_ADDRESS = "127.0.0.1";
@@ -40,6 +42,7 @@ class Controller {
     private DataInputStream in;
     private volatile boolean authorized;
     private boolean exit;
+    private final ObservableList<String> listNicks = FXCollections.observableArrayList();
 
     public void setExit(boolean exit) {
         this.exit = exit;
@@ -57,15 +60,12 @@ class Controller {
     private void sendMessage() {
         if (textField.getText().isEmpty()) return;
         try {
-            if (socket.isClosed())  authorize(false);
-            else {
-                String string = textField.getText();
-                if (string.equalsIgnoreCase(SMC.DISCONNECTION)) exit = true;
-                out.writeUTF(string);
-                out.flush();
-                textField.clear();
-                textField.requestFocus();
-            }
+            String string = textField.getText();
+            if (string.equalsIgnoreCase(SMC.DISCONNECTION)) exit = true;
+            out.writeUTF(string);
+            out.flush();
+            textField.clear();
+            textField.requestFocus();
         }catch (IOException e) {
             try {
                 socket.close();
@@ -123,6 +123,7 @@ class Controller {
                 Parent root = loader.load();
                 stage.setScene(new Scene(root));
                 stage.centerOnScreen();
+                if (authorized) nicksListView.setItems(listNicks);
                 if (socket.isClosed() && !exit)outputToLabel(NO_COMMUNICATION);
                 stage.show();
             }catch (IOException e) {
@@ -136,13 +137,11 @@ class Controller {
             socket = new Socket(IP_ADDRESS, PORT);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-            new ClientSocketThread().start();
-        }catch (ConnectException e){
+        }catch (IOException e){
             outputToLabel(NO_COMMUNICATION);
             return false;
-        }catch (IOException e){
-            e.printStackTrace();
         }
+        new ClientSocketThread().start();
         return true;
     }
 
@@ -160,7 +159,9 @@ class Controller {
                         switch (strings[0].toLowerCase()){
                             case SMC.OK:
                                 authorize(true);
-                                outputToLabel(strings[1]);
+                                String[] str = strings[1].trim().split("\\s+", LIMIT);
+                                outputToLabel(str[0]);
+                                if (str.length > 1) updateListNicks(str[1]);
                                 break;
                             case SMC.DISCONNECTION:
                                 out.writeUTF(SMC.DISCONNECTION);
@@ -174,15 +175,21 @@ class Controller {
                                 outputToLabel("Учетная запись уже используется");
                                 break;
                             case SMC.NO:
-                                Platform.runLater(()->{
-                                    new Caution(Alert.AlertType.ERROR,
+                                Platform.runLater(new Caution(Alert.AlertType.ERROR,
                                         String.format("Сообщение не было доставлено. Отсутствие адресата %s",
-                                                    strings[1])).showAndWait();
-                                });
+                                                strings[1]))::showAndWait);
+                                break;
+                            case SMC.ADD:
+                                if (strings[1].split("\\s+", LIMIT).length == 1) addNick(strings[1]);
+                                else updateListNicks(strings[1]);
+                                break;
+                            case SMC.DEL:
+                                delNick(strings[1]);
                                 break;
                             default:
-                                new Caution(Alert.AlertType.ERROR,
-                                        String.format("Неизвестное сообщение: %s", string)).showAndWait();
+                                String msg = string;
+                                Platform.runLater(new Caution(Alert.AlertType.ERROR,
+                                     String.format("Неизвестное сообщение: %s", msg))::showAndWait);
                         }
                     }else if (authorized) textArea.appendText(string + "\r\n");
                 }while (authorized);
@@ -196,6 +203,26 @@ class Controller {
                 }
             }
         }
+    }
+
+    private void addNick(String string){
+        Platform.runLater(() ->{
+            textArea.appendText(String.format("В чат вошел %s\n", string));
+            listNicks.add(string);
+        });
+    }
+
+    private void updateListNicks(String string){
+        String[] strings = string.split("\\s+");
+        if (!listNicks.isEmpty()) listNicks.clear();
+        listNicks.addAll(strings);
+    }
+
+    private void delNick(String string){
+        Platform.runLater(()->{
+            textArea.appendText(String.format("Из чата вышел %s\n", string));
+            listNicks.remove(string);
+        });
     }
 
     private void outputToLabel(String string){

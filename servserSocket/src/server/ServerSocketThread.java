@@ -47,9 +47,7 @@ public class ServerSocketThread extends Thread{
                     continue;
                 }
                 new ClientHandler(this, socket);
-                Platform.runLater(() ->{
-                    controller.count.setText(String.valueOf(addConnect()));
-                });
+                Platform.runLater(() -> controller.count.setText(String.valueOf(addConnect())));
             }
             controller.start.setFill(Color.WHITE);
             stopClientHandler();
@@ -78,6 +76,7 @@ public class ServerSocketThread extends Thread{
             }
         }
         clientHandler.sendMessage(String.format("%s %s", SMC.NO, strings[1]));
+        broadcastMsg(String.format("%s %s", SMC.ADD, getListNick()));
     }
 
     synchronized boolean isBusyNick(String nick){
@@ -87,21 +86,45 @@ public class ServerSocketThread extends Thread{
         return false;
     }
 
+    private synchronized void broadcastMsg(String message, ClientHandler clientHandler){
+        for (ClientHandler client : clients) {
+            if (clientHandler.getNick().equals(client.getNick())) continue;
+            client.sendMessage(message);
+        }
+    }
+
     synchronized void broadcastMsg(String message){
-        for (ClientHandler clientHandler : clients) {
-            clientHandler.sendMessage(message);
+        for (ClientHandler client : clients) {
+            client.sendMessage(message);
         }
     }
 
     synchronized void subscribe(ClientHandler clientHandler){
         clients.add(clientHandler);
+        broadcastMsg(String.format("%s %s", SMC.ADD, clientHandler.getNick()), clientHandler);
     }
 
     synchronized void unsubscribe(ClientHandler clientHandler){
         clients.remove(clientHandler);
-        Platform.runLater(() ->{
-            controller.count.setText(String.valueOf(delConnect()));
-        });
+        broadcastMsg(String.format("%s %s", SMC.DEL, clientHandler.getNick()), clientHandler);
+        Platform.runLater(() -> controller.count.setText(String.valueOf(delConnect())));
+    }
+
+    private String getListNick(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (ClientHandler client : clients) {
+            stringBuilder.append(client.getNick()).append(" ");
+        }
+        return stringBuilder.toString();
+    }
+
+    String getListNick(ClientHandler clientHandler){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (ClientHandler client : clients) {
+            if (clientHandler.getNick().equals(client.getNick())) continue;
+            stringBuilder.append(client.getNick()).append(" ");
+        }
+        return stringBuilder.toString();
     }
 
     private synchronized int addConnect(){

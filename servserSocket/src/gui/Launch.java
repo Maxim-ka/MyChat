@@ -32,11 +32,13 @@ public class Launch extends Application{
             if (event.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST){
                 Optional<ButtonType> result = new Caution(Alert.AlertType.CONFIRMATION, GET_OUT).showAndWait();
                 if (result.isPresent() && result.get() == OK) {
-                    new Caution(Alert.AlertType.WARNING, "Все подключения должны быть остановлены").showAndWait();
-                    Platform.exit();
-                    System.exit(0);
+                    Optional<ButtonType> res = new Caution(Alert.AlertType.CONFIRMATION, "Все подключения остановлены?").showAndWait();
+                    if (res.isPresent() && res.get() == OK) {
+                        Platform.exit();
+                        System.exit(0);
+                    }
                 }
-                else event.consume();
+                event.consume();
             }
         });
         primaryStage.setScene(new Scene(root));

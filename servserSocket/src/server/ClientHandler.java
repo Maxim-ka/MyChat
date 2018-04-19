@@ -24,10 +24,12 @@ class ClientHandler extends Thread{
             do{
                 msg = in.readUTF();
                 if(msg.startsWith(SMC.SERVICE)){
-                    if (msg.equalsIgnoreCase(SMC.DISCONNECTION)) connection = false;
-                    if (msg.startsWith(SMC.AUTH)) msg = confirmAuthorization(msg);
-                    if (!connection || msg.startsWith(SMC.OK))sendMessage(msg);
-                    if (msg.contains(SMC.W)) serverThread.sendPrivateMessages(msg, this);
+                    if (msg.equalsIgnoreCase(SMC.DISCONNECTION)){
+                        connection = false;
+                        sendMessage(msg);
+                    }
+                    if (msg.startsWith(SMC.AUTH)) confirmAuthorization(msg);
+                    if (msg.startsWith(SMC.W)) serverThread.sendPrivateMessages(msg, this);
                 }else serverThread.broadcastMsg(String.format("%s: %s;",nick, msg));
             }while (connection);
         }catch (IOException e){
@@ -70,20 +72,23 @@ class ClientHandler extends Thread{
         }
     }
 
-    private String confirmAuthorization(String string){
+    private void confirmAuthorization(String string){
         String[] strings = string.split("\\s+");
-        nick = serverThread.getAuthService().getNick(strings[1], strings[2]);
-        if (nick != null){
-            if (serverThread.isBusyNick(nick)){
-                connection = false;
-                return SMC.REPETITION;
+        if (strings.length == 3){
+            nick = serverThread.getAuthService().getNick(strings[1], strings[2]);
+            if (nick != null){
+                if (serverThread.isBusyNick(nick)){
+                    connection = false;
+                    sendMessage(SMC.REPETITION);
+                    return;
+                }
+                serverThread.subscribe(this);
+                connection = true;
+                sendMessage(String.format("%s %s %s", SMC.OK, nick, serverThread.getListNick(this)));
+                return;
             }
-            serverThread.subscribe(this);
-            connection = true;
-            return String.format("%s %s", SMC.OK, nick);
-        }else{
-            connection = false;
-            return SMC.INVALID;
         }
+        connection = false;
+        sendMessage(SMC.INVALID);
     }
 }
