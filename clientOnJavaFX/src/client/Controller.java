@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
@@ -43,6 +44,7 @@ class Controller {
     private volatile boolean authorized;
     private boolean exit;
     private final ObservableList<String> listNicks = FXCollections.observableArrayList();
+    private String recipient;
 
     public void setExit(boolean exit) {
         this.exit = exit;
@@ -62,6 +64,10 @@ class Controller {
         try {
             String string = textField.getText();
             if (string.equalsIgnoreCase(SMC.DISCONNECTION)) exit = true;
+            else if (recipient != null) {
+                string = String.format("%s %s %s", SMC.W, recipient, string);
+                recipient = null;
+            }
             out.writeUTF(string);
             out.flush();
             textField.clear();
@@ -73,6 +79,12 @@ class Controller {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+        }
+    }
+    @FXML
+    public void selectNick(MouseEvent mouseEvent){
+        if (mouseEvent.getEventType() ==  MouseEvent.MOUSE_CLICKED){
+            recipient =  nicksListView.getSelectionModel().getSelectedItem();
         }
     }
 
@@ -123,7 +135,7 @@ class Controller {
                 Parent root = loader.load();
                 stage.setScene(new Scene(root));
                 stage.centerOnScreen();
-                if (authorized) nicksListView.setItems(listNicks);
+                if (authorized)  nicksListView.setItems(listNicks);
                 if (socket.isClosed() && !exit)outputToLabel(NO_COMMUNICATION);
                 stage.show();
             }catch (IOException e) {
@@ -175,9 +187,11 @@ class Controller {
                                 outputToLabel("Учетная запись уже используется");
                                 break;
                             case SMC.NO:
-                                Platform.runLater(new Caution(Alert.AlertType.ERROR,
+                                Platform.runLater(()->{
+                                    new Caution(Alert.AlertType.ERROR,
                                         String.format("Сообщение не было доставлено. Отсутствие адресата %s",
-                                                strings[1]))::showAndWait);
+                                                strings[1])).showAndWait();
+                                });
                                 break;
                             case SMC.ADD:
                                 if (strings[1].split("\\s+", LIMIT).length == 1) addNick(strings[1]);
@@ -187,14 +201,17 @@ class Controller {
                                 delNick(strings[1]);
                                 break;
                             default:
-                                String msg = string;
-                                Platform.runLater(new Caution(Alert.AlertType.ERROR,
-                                     String.format("Неизвестное сообщение: %s", msg))::showAndWait);
+                                final String fString = string;
+                                Platform.runLater(()->{
+                                    new Caution(Alert.AlertType.ERROR,
+                                        String.format("Неизвестное сообщение: %s", fString)).showAndWait();
+                                });
                         }
                     }else if (authorized) textArea.appendText(string + "\r\n");
                 }while (authorized);
             }catch (IOException e){
                 authorize(false);
+                outputToLabel(NO_COMMUNICATION);
             }finally {
                 try {
                     socket.close();
@@ -214,8 +231,11 @@ class Controller {
 
     private void updateListNicks(String string){
         String[] strings = string.split("\\s+");
-        if (!listNicks.isEmpty()) listNicks.clear();
-        listNicks.addAll(strings);
+        if (listNicks.size() != 0) listNicks.clear();
+        for (String s : strings) {
+            if (s.equals(label.getText())) continue;
+            listNicks.add(s);
+        }
     }
 
     private void delNick(String string){

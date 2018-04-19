@@ -71,7 +71,8 @@ public class ServerSocketThread extends Thread{
         for (ClientHandler client : clients) {
             if (client.getNick().equals(strings[1])){
                 client.sendMessage(String.format("%s: %s;", clientHandler.getNick(), strings[2]));
-                clientHandler.sendMessage(String.format("%s: @%s (%s);",clientHandler.getNick(), strings[1], strings[2]));
+                clientHandler.sendMessage(String.format("%s: @%s (%s);",
+                        clientHandler.getNick(), strings[1], strings[2]));
                 return;
             }
         }
@@ -100,13 +101,14 @@ public class ServerSocketThread extends Thread{
     }
 
     synchronized void subscribe(ClientHandler clientHandler){
-        clients.add(clientHandler);
-        broadcastMsg(String.format("%s %s", SMC.ADD, clientHandler.getNick()), clientHandler);
+        if (clients.add(clientHandler))
+            broadcastMsg(String.format("%s %s", SMC.ADD, clientHandler.getNick()), clientHandler);
     }
 
     synchronized void unsubscribe(ClientHandler clientHandler){
-        clients.remove(clientHandler);
-        broadcastMsg(String.format("%s %s", SMC.DEL, clientHandler.getNick()), clientHandler);
+        if (clients.remove(clientHandler)){
+            broadcastMsg(String.format("%s %s", SMC.DEL, clientHandler.getNick()));
+        }
         Platform.runLater(() -> controller.count.setText(String.valueOf(delConnect())));
     }
 
