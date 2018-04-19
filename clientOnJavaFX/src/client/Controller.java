@@ -137,6 +137,7 @@ class Controller {
                 stage.centerOnScreen();
                 if (authorized)  nicksListView.setItems(listNicks);
                 if (socket.isClosed() && !exit)outputToLabel(NO_COMMUNICATION);
+                if (!authorized)listNicks.clear();
                 stage.show();
             }catch (IOException e) {
                 e.printStackTrace();
@@ -230,12 +231,14 @@ class Controller {
     }
 
     private void updateListNicks(String string){
-        String[] strings = string.split("\\s+");
-        if (listNicks.size() != 0) listNicks.clear();
-        for (String s : strings) {
-            if (s.equals(label.getText())) continue;
-            listNicks.add(s);
-        }
+        Platform.runLater(() ->{
+            String[] strings = string.split("\\s+");
+            if (listNicks.size() != 0) listNicks.clear();
+            for (String s : strings) {
+                if (s.equals(label.getText())) continue;
+                listNicks.add(s);
+            }
+        });
     }
 
     private void delNick(String string){

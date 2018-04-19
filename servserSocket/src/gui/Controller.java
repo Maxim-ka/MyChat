@@ -12,7 +12,7 @@ public class Controller {
     @FXML
     private TextField portField;
     @FXML
-    public  Label count;
+    public Label count;
     @FXML
     public Circle start;
     @FXML

@@ -28,11 +28,13 @@ public class Launch extends Application{
         primaryStage.setTitle("сервер");
         primaryStage.setResizable(false);
         primaryStage.initStyle(StageStyle.DECORATED);
+        primaryStage.setScene(new Scene(root));
         primaryStage.setOnCloseRequest((WindowEvent event) -> {
             if (event.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST){
                 Optional<ButtonType> result = new Caution(Alert.AlertType.CONFIRMATION, GET_OUT).showAndWait();
                 if (result.isPresent() && result.get() == OK) {
-                    Optional<ButtonType> res = new Caution(Alert.AlertType.CONFIRMATION, "Все подключения остановлены?").showAndWait();
+                    Optional<ButtonType> res = new Caution(Alert.AlertType.CONFIRMATION,
+                            "Все подключения ДОЛЖНЫ быть остановлены").showAndWait();
                     if (res.isPresent() && res.get() == OK) {
                         Platform.exit();
                         System.exit(0);
@@ -41,7 +43,6 @@ public class Launch extends Application{
                 event.consume();
             }
         });
-        primaryStage.setScene(new Scene(root));
         primaryStage.setAlwaysOnTop(true);
         primaryStage.setX(POS_X);
         primaryStage.setY(POS_Y);
