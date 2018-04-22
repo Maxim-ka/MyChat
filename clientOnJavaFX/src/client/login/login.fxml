@@ -13,8 +13,7 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="250.0" prefWidth="500.0"
-            xmlns="http://javafx.com/javafx/8.0.121"
-            xmlns:fx="http://javafx.com/fxml/1">
+            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <center>
        <GridPane alignment="CENTER" prefHeight="200.0" BorderPane.alignment="CENTER">
            <columnConstraints>
@@ -28,12 +27,12 @@
            <opaqueInsets>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
            </opaqueInsets>
-           <Label alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" text="Логин" textAlignment="JUSTIFY" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+           <Label alignment="CENTER" contentDisplay="CENTER" text="Логин" textAlignment="JUSTIFY" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
               <font>
                   <Font size="24.0" />
               </font>
            </Label>
-           <Label focusTraversable="false" text="Пароль" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+           <Label text="Пароль" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
               <font>
                   <Font size="24.0" />
               </font>
@@ -72,7 +71,7 @@
                <RowConstraints />
                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
-           <Button alignment="CENTER" cancelButton="true" contentDisplay="CENTER" mnemonicParsing="false" text="Регистрация" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+           <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#register" text="Регистрация" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
               <font>
                   <Font size="26.0" />
               </font>
@@ -80,8 +79,7 @@
                   <Insets />
               </GridPane.margin>
            </Button>
-           <Button fx:id="authorization" alignment="CENTER" contentDisplay="CENTER" defaultButton="true"
-                   mnemonicParsing="false" onAction="#sendAuthMsg" text="Авторизоваться" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+           <Button fx:id="authorization" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#sendAuthMsg" text="Авторизоваться" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
               <font>
                   <Font size="26.0" />
               </font>
@@ -95,7 +93,7 @@
        </GridPane>
    </bottom>
    <top>
-      <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" text="Вход в ЧАТ" textAlignment="JUSTIFY" BorderPane.alignment="CENTER">
+      <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" text="Вход в ЧАТ" textAlignment="JUSTIFY" BorderPane.alignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>

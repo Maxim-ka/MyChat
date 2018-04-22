@@ -3,9 +3,9 @@ package client;
 import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 
-class Caution extends Alert {
+public class Caution extends Alert {
 
-    Caution(AlertType alertType, String contentText) {
+    public Caution(AlertType alertType, String contentText) {
         super(alertType);
         setHeaderText(null);
         setContentText(contentText);

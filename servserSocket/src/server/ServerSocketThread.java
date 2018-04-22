@@ -112,7 +112,7 @@ public class ServerSocketThread extends Thread{
         Platform.runLater(() -> controller.count.setText(String.valueOf(delConnect())));
     }
 
-    private String getListNick(){
+    String getListNick(){
         StringBuilder stringBuilder = new StringBuilder();
         for (ClientHandler client : clients) {
             stringBuilder.append(client.getNick()).append(" ");

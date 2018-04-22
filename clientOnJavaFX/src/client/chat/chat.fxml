@@ -49,7 +49,7 @@
        </ScrollPane>
    </right>
    <top>
-      <Label fx:id="label" focusTraversable="false" BorderPane.alignment="CENTER">
+      <Label fx:id="label" onMouseClicked="#toChangeNick" alignment="CENTER" contentDisplay="CENTER" textAlignment="JUSTIFY" BorderPane.alignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>

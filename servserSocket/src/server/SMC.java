@@ -12,4 +12,9 @@ class SMC {
     public static final String AUTH = "/auth";
     public static final String ADD = "/add";
     public static final String DEL = "/del";
+    public static final String REG = "/reg";
+    public static final String REFUSAL = "/refusal";
+    public static final String CHANGE = "/change";
+    public static final String YES_CHANGE = "/yes_change";
+    public static final String NO_CHANGE = "/no_change";
 }
