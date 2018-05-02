@@ -3,7 +3,7 @@ package client.chat;
 import client.Caution;
 import client.Client;
 import client.SMC;
-import client.Supervisianble;
+import client.Supervisiable;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +16,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class Chat implements Initializable, Supervisianble{
+public class Chat implements Initializable, Supervisiable {
 
     @FXML
     private Label label;

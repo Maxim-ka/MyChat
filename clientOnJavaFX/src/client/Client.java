@@ -28,9 +28,9 @@ public class Client{
     private String answer;
     private SocketThread socketThread;
     private Socket socket;
-    private Supervisianble currentController;
+    private Supervisiable currentController;
 
-    public void setCurrentController(Supervisianble currentController) {
+    public void setCurrentController(Supervisiable currentController) {
         this.currentController = currentController;
     }
 
@@ -72,7 +72,7 @@ public class Client{
 
     public void changeWindow(Label label, String path){
         try {
-            Supervisianble controller = (path.equals(SMC.CHAT_FXML)) ? chat :
+            Supervisiable controller = (path.equals(SMC.CHAT_FXML)) ? chat :
                     (path.equals(SMC.LOGIN_FXML)) ? login : registration;
             Stage stage = (Stage) label.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));

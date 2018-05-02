@@ -12,7 +12,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 
 
-public class Registration implements Supervisianble{
+public class Registration implements Supervisiable {
 
     @FXML
     private Label label;

@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-public class Login implements Supervisianble{
+public class Login implements Supervisiable {
 
     @FXML
     private Label label;

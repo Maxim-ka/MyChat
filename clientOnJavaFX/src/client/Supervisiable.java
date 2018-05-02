@@ -2,7 +2,7 @@ package client;
 
 import javafx.scene.control.Label;
 
-public interface Supervisianble {
+public interface Supervisiable {
 
     Label getLabel();
 }
